@@ -451,12 +451,13 @@ const Button: React.FC<{
   className?: string;
   size?: "sm" | "md";
   theme: Theme;
-}> = ({ label, onClick, kind = "primary", disabled, className = "", size = "md", theme }) => {
+  fullWidth?: boolean;
+}> = ({ label, onClick, kind = "primary", disabled, className = "", size = "md", theme, fullWidth = false }) => {
   const sizeCls =
     size === "sm"
       ? "px-3 py-1.5 text-xs md:text-sm rounded-lg"
       : "px-5 py-3 text-sm md:text-base rounded-xl";
-  const base = `w-full md:w-auto ${sizeCls} font-semibold whitespace-nowrap transition active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-cyan-400/50 disabled:opacity-60 disabled:cursor-not-allowed`;
+  const base = `${fullWidth ? "w-full" : "w-auto"} ${sizeCls} font-semibold whitespace-nowrap transition active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-cyan-400/50 disabled:opacity-60 disabled:cursor-not-allowed`;
   const solid = (bg: string, hover: string, text: string) => `${bg} ${hover} ${text}`;
   const styles =
     kind === "primary"
@@ -484,12 +485,13 @@ const Button: React.FC<{
 };
 
 const ThemeToggle: React.FC<{ theme: Theme; setTheme: (t: Theme) => void }> = ({ theme, setTheme }) => (
-  <div className="flex gap-2">
+  <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:flex-nowrap">
     <Button
       size="sm"
       theme={theme}
       kind={theme === "dark" ? "primary" : "info"}
       label={STR.BTN_THEME_DARK}
+      className="flex-1 min-w-[120px] sm:flex-none"
       onClick={() => setTheme("dark")}
     />
     <Button
@@ -497,6 +499,7 @@ const ThemeToggle: React.FC<{ theme: Theme; setTheme: (t: Theme) => void }> = ({
       theme={theme}
       kind={theme === "light" ? "primary" : "warning"}
       label={STR.BTN_THEME_LIGHT}
+      className="flex-1 min-w-[120px] sm:flex-none"
       onClick={() => setTheme("light")}
     />
   </div>
@@ -709,11 +712,18 @@ export default function App() {
     return (
       <div className={rootCls}>
         <div className="max-w-3xl mx-auto space-y-5">
-          <header className="flex items-center justify-between gap-3 flex-wrap">
+          <header className="flex flex-wrap items-center justify-between gap-3">
             <h1 className="text-xl md:text-2xl font-semibold tracking-wide">{STR.APP_TITLE}</h1>
-            <div className="flex gap-2">
+            <div className="flex w-full flex-wrap justify-end gap-2 sm:w-auto sm:flex-nowrap">
               <ThemeToggle theme={theme} setTheme={setTheme} />
-              <Button theme={theme} label={STR.BTN_START_RESET} kind="success" onClick={startOrReset} disabled={!boxesReady} />
+              <Button
+                theme={theme}
+                label={STR.BTN_START_RESET}
+                kind="success"
+                onClick={startOrReset}
+                disabled={!boxesReady}
+                className="min-w-[150px]"
+              />
             </div>
           </header>
 
@@ -738,11 +748,18 @@ export default function App() {
     return (
       <div className={rootCls}>
         <div className="max-w-3xl mx-auto space-y-5">
-          <header className="flex items-center justify-between gap-3 flex-wrap">
+          <header className="flex flex-wrap items-center justify-between gap-3">
             <h1 className="text-xl md:text-2xl font-semibold tracking-wide">{STR.APP_TITLE}</h1>
-            <div className="flex gap-2">
+            <div className="flex w-full flex-wrap justify-end gap-2 sm:w-auto sm:flex-nowrap">
               <ThemeToggle theme={theme} setTheme={setTheme} />
-              <Button theme={theme} label={STR.BTN_START_RESET} kind="success" onClick={startOrReset} disabled={!boxesReady} />
+              <Button
+                theme={theme}
+                label={STR.BTN_START_RESET}
+                kind="success"
+                onClick={startOrReset}
+                disabled={!boxesReady}
+                className="min-w-[150px]"
+              />
             </div>
           </header>
 
@@ -810,15 +827,22 @@ export default function App() {
   return (
     <div className={rootCls}>
       <div className="max-w-3xl mx-auto space-y-5">
-        <header className="flex items-center justify-between gap-3 flex-wrap">
+        <header className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-xl md:text-2xl font-semibold tracking-wide">{STR.APP_TITLE}</h1>
-          <div className="flex gap-2 flex-wrap items-center">
+          <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap">
             <Chip theme={theme}>
               {STR.Q_PREFIX}
               {idx + 1}/20
             </Chip>
             <ThemeToggle theme={theme} setTheme={setTheme} />
-            <Button theme={theme} label={STR.BTN_START_RESET} kind="success" onClick={startOrReset} disabled={!boxesReady} />
+            <Button
+              theme={theme}
+              label={STR.BTN_START_RESET}
+              kind="success"
+              onClick={startOrReset}
+              disabled={!boxesReady}
+              className="min-w-[150px]"
+            />
           </div>
         </header>
 
@@ -829,10 +853,10 @@ export default function App() {
         <Panel theme={theme} className={panelAccent}>
           <div className="text-base md:text-lg leading-relaxed">{q?.text}</div>
           {!answered ? (
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <Button theme={theme} kind="success" label={`✓ ${STR.L_CORRECT}`} onClick={() => answer(STR.A_MARU)} />
-              <Button theme={theme} kind="danger" label={`✕ ${STR.L_WRONG}`} onClick={() => answer(STR.A_BATSU)} />
-              <Button theme={theme} kind="neutral" label={`… ${STR.L_SKIP}`} onClick={() => answer(STR.A_SKIP)} />
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <Button theme={theme} kind="success" label={`✓ ${STR.L_CORRECT}`} onClick={() => answer(STR.A_MARU)} fullWidth />
+              <Button theme={theme} kind="danger" label={`✕ ${STR.L_WRONG}`} onClick={() => answer(STR.A_BATSU)} fullWidth />
+              <Button theme={theme} kind="neutral" label={`… ${STR.L_SKIP}`} onClick={() => answer(STR.A_SKIP)} fullWidth />
             </div>
           ) : (
             <div className="mt-5 space-y-4">
@@ -840,10 +864,10 @@ export default function App() {
 
               <div className="space-y-2">
                 <div className="text-xs opacity-80">{STR.CONF_TITLE}</div>
-                <div className="flex gap-2">
-                  <Button theme={theme} label={STR.CONF_HIGH} kind={conf === "hi" ? "primary" : "ghost"} onClick={() => setConf("hi")} />
-                  <Button theme={theme} label={STR.CONF_MID} kind={conf === "md" ? "primary" : "ghost"} onClick={() => setConf("md")} />
-                  <Button theme={theme} label={STR.CONF_LOW} kind={conf === "lo" ? "primary" : "ghost"} onClick={() => setConf("lo")} />
+                <div className="flex flex-wrap gap-2 sm:flex-nowrap">
+                  <Button theme={theme} label={STR.CONF_HIGH} kind={conf === "hi" ? "primary" : "ghost"} onClick={() => setConf("hi")} className="flex-1 min-w-[96px]" />
+                  <Button theme={theme} label={STR.CONF_MID} kind={conf === "md" ? "primary" : "ghost"} onClick={() => setConf("md")} className="flex-1 min-w-[96px]" />
+                  <Button theme={theme} label={STR.CONF_LOW} kind={conf === "lo" ? "primary" : "ghost"} onClick={() => setConf("lo")} className="flex-1 min-w-[96px]" />
                 </div>
               </div>
 
