@@ -69,6 +69,18 @@ const STR = {
   BTN_THEME_LIGHT: "☀️ ライト",
 } as const;
 
+const makeConfidenceLabel = (raw: string): React.ReactNode => {
+  const parts = raw.trim().split(/\s+/);
+  const icon = parts.shift() ?? "";
+  const text = parts.join(" ");
+  return (
+    <span className="flex items-center justify-center gap-1">
+      <span className="w-4 text-center">{icon}</span>
+      <span>{text}</span>
+    </span>
+  );
+};
+
 const SRS_MAX = 5;
 type SRSMap = Record<string, number>;
 function getBox(map: SRSMap, id: string | number) {
@@ -444,7 +456,7 @@ const Chip: React.FC<{ children: React.ReactNode; className?: string; theme: The
 );
 
 const Button: React.FC<{
-  label: string;
+  label: React.ReactNode;
   onClick?: () => void;
   kind?: "primary" | "ghost" | "danger" | "success" | "warning" | "info" | "neutral";
   disabled?: boolean;
@@ -874,27 +886,30 @@ export default function App() {
 
               <div className="space-y-2">
                 <div className="text-xs opacity-80">{STR.CONF_TITLE}</div>
-                <div className="flex flex-wrap gap-2 sm:flex-nowrap">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 items-stretch">
                   <Button
                     theme={theme}
-                    label={STR.CONF_HIGH}
+                    label={makeConfidenceLabel(STR.CONF_HIGH)}
                     kind={conf === "hi" ? "primary" : "ghost"}
                     onClick={() => setConf("hi")}
-                    className="flex-1 min-w-[96px] sm:flex-none"
+                    fullWidth
+                    className="min-h-11 text-[clamp(0.9rem,2.6vw,1rem)]"
                   />
                   <Button
                     theme={theme}
-                    label={STR.CONF_MID}
+                    label={makeConfidenceLabel(STR.CONF_MID)}
                     kind={conf === "md" ? "primary" : "ghost"}
                     onClick={() => setConf("md")}
-                    className="flex-1 min-w-[96px] sm:flex-none"
+                    fullWidth
+                    className="min-h-11 text-[clamp(0.9rem,2.6vw,1rem)]"
                   />
                   <Button
                     theme={theme}
-                    label={STR.CONF_LOW}
+                    label={makeConfidenceLabel(STR.CONF_LOW)}
                     kind={conf === "lo" ? "primary" : "ghost"}
                     onClick={() => setConf("lo")}
-                    className="flex-1 min-w-[96px] sm:flex-none"
+                    fullWidth
+                    className="min-h-11 text-[clamp(0.9rem,2.6vw,1rem)]"
                   />
                 </div>
               </div>
