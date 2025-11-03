@@ -484,13 +484,12 @@ const Button: React.FC<{
 };
 
 const ThemeToggle: React.FC<{ theme: Theme; setTheme: (t: Theme) => void }> = ({ theme, setTheme }) => (
-  <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:flex-nowrap">
+  <div className="flex gap-2">
     <Button
       size="sm"
       theme={theme}
       kind={theme === "dark" ? "primary" : "info"}
       label={STR.BTN_THEME_DARK}
-      className="sm:w-auto"
       onClick={() => setTheme("dark")}
     />
     <Button
@@ -498,7 +497,6 @@ const ThemeToggle: React.FC<{ theme: Theme; setTheme: (t: Theme) => void }> = ({
       theme={theme}
       kind={theme === "light" ? "primary" : "warning"}
       label={STR.BTN_THEME_LIGHT}
-      className="sm:w-auto"
       onClick={() => setTheme("light")}
     />
   </div>
@@ -713,7 +711,7 @@ export default function App() {
         <div className="max-w-3xl mx-auto space-y-5">
           <header className="flex items-center justify-between gap-3 flex-wrap">
             <h1 className="text-xl md:text-2xl font-semibold tracking-wide">{STR.APP_TITLE}</h1>
-            <div className="flex w-full flex-wrap justify-end gap-2 sm:w-auto">
+            <div className="flex gap-2">
               <ThemeToggle theme={theme} setTheme={setTheme} />
               <Button theme={theme} label={STR.BTN_START_RESET} kind="success" onClick={startOrReset} disabled={!boxesReady} />
             </div>
@@ -742,7 +740,7 @@ export default function App() {
         <div className="max-w-3xl mx-auto space-y-5">
           <header className="flex items-center justify-between gap-3 flex-wrap">
             <h1 className="text-xl md:text-2xl font-semibold tracking-wide">{STR.APP_TITLE}</h1>
-            <div className="flex w-full flex-wrap justify-end gap-2 sm:w-auto">
+            <div className="flex gap-2">
               <ThemeToggle theme={theme} setTheme={setTheme} />
               <Button theme={theme} label={STR.BTN_START_RESET} kind="success" onClick={startOrReset} disabled={!boxesReady} />
             </div>
@@ -814,7 +812,7 @@ export default function App() {
       <div className="max-w-3xl mx-auto space-y-5">
         <header className="flex items-center justify-between gap-3 flex-wrap">
           <h1 className="text-xl md:text-2xl font-semibold tracking-wide">{STR.APP_TITLE}</h1>
-          <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+          <div className="flex gap-2 flex-wrap items-center">
             <Chip theme={theme}>
               {STR.Q_PREFIX}
               {idx + 1}/20
